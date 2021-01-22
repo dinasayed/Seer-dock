@@ -36,4 +36,10 @@
    $ docker build -t noureldin/doi:1.7.9 -f Dockerfile.doi .
    ```
 
+6. Build Solr image
+
+   ```bash
+   $ docker build -t noureldin/csxsolr:4.9.0 -f Dockerfile.solr .
+   ```
+
    
