@@ -1,0 +1,17 @@
+FROM docker.io/library/perl:5.26.3
+RUN cpanm install XML::Bare Digest::SHA1 String::Approx
+RUN apt-get update && apt-get install -y \
+  ant \
+  lib32stdc++6 \
+  lib32z1 \
+  && rm -rf /var/lib/apt/lists/*
+COPY CiteSeerX /CiteSeerX
+WORKDIR /CiteSeerX
+ENV JAVA_TOOL_OPTIONS -Dfile.encoding=UTF8
+RUN ant clean dist
+COPY PerlPipelineExtractor /PerlPipelineExtractor
+WORKDIR /PerlPipelineExtractor
+RUN ant clean jar
+ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk-amd64
+CMD ant run
+
