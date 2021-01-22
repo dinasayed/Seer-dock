@@ -1,0 +1,16 @@
+FROM docker.io/library/perl:5.26.3
+RUN apt-get update && apt-get install -y \
+  ant \
+  && rm -rf /var/lib/apt/lists/*
+COPY CiteSeerX /CiteSeerX
+WORKDIR /CiteSeerX
+ENV JAVA_TOOL_OPTIONS -Dfile.encoding=UTF8
+RUN ant clean dist
+RUN curl -SL https://archive.apache.org/dist/lucene/solr/4.9.0/solr-4.9.0.tgz \
+    | tar -xzC /
+
+FROM tomcat:8.0.14
+COPY --from=0 /solr-4.9.0/dist/solr-4.9.0.war /usr/local/tomcat/webapps/solr.war
+COPY --from=0 /solr-4.9.0/example/lib/ext/*.jar /usr/local/tomcat/lib/
+COPY --from=0 /CiteSeerX/dist/webapp/citeseerx.war /usr/local/tomcat/webapps/citeseerx.war
+COPY CiteSeerX/web/citeseerx_webapp/WEB-INF/FoulWordsList.txt /FoulWordsList.txt
