@@ -54,4 +54,11 @@
    $ docker-compose up -d
    ```
 
-   
+---
+
+Push your commits recursively using
+
+```bash
+$ git push --recurse-submodules=on-demand
+```
+
