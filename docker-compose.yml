@@ -1,0 +1,43 @@
+version: "3.9"
+services:
+  mysql:
+    image: "noureldin/csxmysql:8.0.16"
+    volumes:
+      - mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: passwd
+      CSXDOMAIN: '%'
+    command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - "3306:3306"
+  heritrix:
+    image: "noureldin/heritrix:3.4.0"
+    ports:
+      - "8443:8443"
+    volumes:
+      - ./data:/data
+    depends_on:
+      - mysql
+  extractor:
+    image: "noureldin/csxextractor:5.26.3"
+    volumes:
+      - ./data:/data
+    depends_on:
+      - mysql
+      - heritrix
+      - doi
+      - solr
+  doi:
+    image: "noureldin/doi:1.7.9"
+  solr:
+    image: "noureldin/csxsolr:4.9.0"
+    volumes:
+      - ./data:/data
+    environment:
+      CATALINA_OPTS: "-Dsolr.solr.home=/data/solr"
+    ports:
+      - "8080:8080"
+volumes:
+  mysql:
+    driver: local
+
