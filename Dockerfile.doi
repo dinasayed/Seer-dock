@@ -8,7 +8,7 @@ ENV JAVA_TOOL_OPTIONS -Dfile.encoding=UTF8
 RUN ant clean dist doiserver
 
 FROM docker.io/angig/axis2
-COPY --from=0 CiteSeerX/dist/services/DOIServer/DOIServer.aar /usr/local/axis2/WEB-INF/services/
+COPY --from=0 /CiteSeerX/dist/services/DOIServer/DOIServer.aar /usr/local/axis2/WEB-INF/services/
 COPY axis2.xml /usr/local/tomcat/conf/Catalina/localhost/
 COPY CiteSeerX/lib/mysql-connector-java-8.0.11.jar /usr/local/tomcat/lib/
 
