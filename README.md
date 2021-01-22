@@ -24,4 +24,10 @@
    $ docker build -t noureldin/heritrix:3.4.0 -f Dockerfile.crawler .
    ```
 
+4. Build Extractor image
+
+   ```bash
+   $ docker build -t noureldin/csxextractor:5.22.1 -f Dockerfile.extractor .
+   ```
+
    
