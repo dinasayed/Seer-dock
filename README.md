@@ -18,4 +18,10 @@
    $ docker build -t noureldin/csxmysql:8.0.16 -f Dockerfile.mysql .
    ```
 
+3. Build Crawler image
+
+   ```bash
+   $ docker build -t noureldin/heritrix:3.4.0 -f Dockerfile.crawler .
+   ```
+
    

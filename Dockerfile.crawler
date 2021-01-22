@@ -1,0 +1,13 @@
+FROM openjdk:8
+#ADD heritrix-3.4.0-20190802.073312-18-dist.tar.gz /opt/
+RUN curl -SL http://builds.archive.org/maven2/org/archive/heritrix/heritrix/3.4.0-SNAPSHOT/heritrix-3.4.0-20190802.073312-18-dist.tar.gz \
+    | tar -xzC /opt/ \
+    && mv /opt/heritrix-* /opt/heritrix
+RUN apt-get update && apt-get install -y \
+  python-django \
+  python-mysqldb \
+  && rm -rf /var/lib/apt/lists/*
+COPY CiteSeerX/crawler/cdi /cdi
+EXPOSE 8443
+ENV FOREGROUND true
+CMD ["/opt/heritrix/bin/heritrix", "--web-admin admin:admin", "--web-bind-hosts 0.0.0.0", "--jobs-dir /data/heritrix/jobs"]
