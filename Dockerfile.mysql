@@ -1,0 +1,4 @@
+FROM mysql:8.0.16
+COPY CiteSeerX/src/sql/*.sh CiteSeerX/src/sql/*.sql /docker-entrypoint-initdb.d/
+RUN chmod a+w /docker-entrypoint-initdb.d
+
