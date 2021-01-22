@@ -30,4 +30,10 @@
    $ docker build -t noureldin/csxextractor:5.22.1 -f Dockerfile.extractor .
    ```
 
+5. Build DOI image
+
+   ```bash
+   $ docker build -t noureldin/doi:1.7.9 -f Dockerfile.doi .
+   ```
+
    

@@ -1,0 +1,5 @@
+<Context path="/axis2" docBase="/usr/local/axis2" debug="5" reloadable="true" crossContext="true">
+    <Resource name="jdbc/DOIDB" auth="Container" type="javax.sql.DataSource" maxTotal="10" maxIdle="30"
+              maxWaitMillis="10000" username="csx-devel" password="csx-devel" driverClassName="com.mysql.jdbc.Driver"
+              url="jdbc:mysql://mysql:3306/csxdoi?autoReconnect=true"/>
+</Context>
