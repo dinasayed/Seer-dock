@@ -436,6 +436,11 @@
          <arr name="env"> <str>MYVAR=val1</str> </arr>
        </listener>
       -->
+    <listener event="postOptimize" class="solr.RunExecutableListener">
+      <str name="exe">/usr/local/solr/bin/snapshooter</str>
+      <str name="dir">.</str>
+      <bool name="wait">true</bool>
+    </listener>
 
   </updateHandler>
   
@@ -528,9 +533,9 @@
                and old cache.  
       -->
     <filterCache class="solr.FastLRUCache"
-                 size="512"
-                 initialSize="512"
-                 autowarmCount="0"/>
+                 size="16384"
+                 initialSize="4096"
+                 autowarmCount="4096"/>
 
     <!-- Query Result Cache
          
@@ -538,9 +543,9 @@
          (DocList) based on a query, a sort, and the range of documents requested.  
       -->
     <queryResultCache class="solr.LRUCache"
-                     size="512"
-                     initialSize="512"
-                     autowarmCount="0"/>
+                     size="16384"
+                     initialSize="4096"
+                     autowarmCount="1024"/>
    
     <!-- Document Cache
 
@@ -549,8 +554,8 @@
          this cache will not be autowarmed.  
       -->
     <documentCache class="solr.LRUCache"
-                   size="512"
-                   initialSize="512"
+                   size="16384"
+                   initialSize="16384"
                    autowarmCount="0"/>
     
     <!-- custom cache currently used by block join --> 
@@ -690,7 +695,7 @@
          Recommend values of 1-2 for read-only slaves, higher for
          masters w/o cache warming.
       -->
-    <maxWarmingSearchers>2</maxWarmingSearchers>
+    <maxWarmingSearchers>4</maxWarmingSearchers>
 
   </query>
 
@@ -837,11 +842,25 @@
     <!-- default values for query parameters can be specified, these
          will be overridden by parameters in the request
       -->
-     <lst name="defaults">
-       <str name="echoParams">explicit</str>
-       <int name="rows">10</int>
-       <str name="df">text</str>
-     </lst>
+    <lst name="defaults">
+      <str name="echoParams">explicit</str>
+      <int name="rows">10</int>
+      <str name="start">0</str>
+      <str name="wt">json</str>
+      <str name="df">text</str>
+      <str name="fl">
+        id,doi,incol,title,author,abstract,year,venue,ncites,scites,vtime
+      </str>
+
+      <str name="defType">edismax</str>
+      <!-- parameters for eDisMax -->
+      <float name="tie">0.1</float>
+      <str name="qf">text^1.0 title^4.0 abstract^2.0</str>
+      <str name="pf">text^1.0 title^4.0 abstract^2.0</str>
+      <str name="bf">map(ncites,500,10000,500)</str>
+      <str name="mm">2&lt;-1 4&lt;75%</str>
+      <int name="ps">0</int>
+    </lst>
     <!-- In addition to defaults, "appends" params can be specified
          to identify values which should be appended to the list of
          multi-val params from the query (or the existing "defaults").
@@ -894,7 +913,7 @@
          <str>nameOfCustomComponent2</str>
        </arr>
       -->
-    </requestHandler>
+  </requestHandler>
 
   <!-- A request handler that returns indented JSON by default -->
   <requestHandler name="/query" class="solr.SearchHandler">
@@ -1220,19 +1239,17 @@
        the "master" or a "slave".  If this instance is a "slave" you will 
        also need to fill in the masterUrl to point to a real machine.
     -->
-    <!--
        <lst name="master">
+         <str name="enable">${enable.master:false}</str>
          <str name="replicateAfter">commit</str>
          <str name="replicateAfter">startup</str>
          <str name="confFiles">schema.xml,stopwords.txt</str>
        </lst>
-    -->
-    <!--
        <lst name="slave">
-         <str name="masterUrl">http://your-master-hostname:8983/solr</str>
-         <str name="pollInterval">00:00:60</str>
+         <str name="enable">${enable.slave:false}</str>
+         <str name="masterUrl">http://csxindex03.ist.psu.edu:8080/solr/citeseerx</str>
+         <str name="pollInterval">01:00:00</str>
        </lst>
-    -->
   </requestHandler>
 
   <!-- Search Components
@@ -1313,7 +1330,7 @@
       <!-- maximum threshold of documents a query term can appear to be considered for correction -->
       <float name="maxQueryFrequency">0.01</float>
       <!-- uncomment this to require suggestions to occur in 1% of the documents
-      	<float name="thresholdTokenFrequency">.01</float>
+      <float name="thresholdTokenFrequency">.01</float>
       -->
     </lst>
     
@@ -1403,16 +1420,18 @@
     </arr>
   </requestHandler>
 
+  <!-- This buggy configuration forces a long build at startup
   <searchComponent name="suggest" class="solr.SuggestComponent">
-  	<lst name="suggester">
+      <lst name="suggester">
       <str name="name">mySuggester</str>
-      <str name="lookupImpl">FuzzyLookupFactory</str>      <!-- org.apache.solr.spelling.suggest.fst -->
-      <str name="dictionaryImpl">DocumentDictionaryFactory</str>     <!-- org.apache.solr.spelling.suggest.HighFrequencyDictionaryFactory --> 
+      <str name="lookupImpl">FuzzyLookupFactory</str>
+      <str name="dictionaryImpl">DocumentDictionaryFactory</str>
       <str name="field">cat</str>
       <str name="weightField">price</str>
       <str name="suggestAnalyzerFieldType">string</str>
     </lst>
   </searchComponent>
+  -->
 
   <requestHandler name="/suggest" class="solr.SearchHandler" startup="lazy">
     <lst name="defaults">
