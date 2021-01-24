@@ -1,0 +1,18 @@
+FROM registry.access.redhat.com/rhscl/httpd-24-rhel7
+USER root
+RUN INSTALL_PKGS=" \
+        httpd24-httpd-devel \
+#        mod_wsgi \
+        gcc-c++ \
+        python-devel \
+        freetype-devel \
+        libpng-devel \
+        mariadb-devel \
+        MySQL-python \
+        python-setuptools \
+    " && \
+    yum install -y --setopt=tsflags=nodocs $INSTALL_PKGS && \
+    rpm -V $INSTALL_PKGS && \
+    yum -y clean all --enablerepo='*'
+COPY CiteSeerX/crawler/code_base/csxbot-0.3 /root/csxbot-0.3
+USER 1001
