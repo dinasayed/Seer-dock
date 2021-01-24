@@ -48,7 +48,13 @@
    $ docker build -t noureldin/csxsolr:4.9.0 -f Dockerfile.solr .
    ```
 
-8. Run
+8. Build Apache httpd image
+
+   ```bash
+   $ docker build -t noureldin/csxhttpd:2.4 -f Dockerfile.httpd .
+   ```
+   
+9. Run
 
    ```bash
    $ docker-compose up -d
