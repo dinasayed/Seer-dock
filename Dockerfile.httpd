@@ -15,4 +15,14 @@ RUN INSTALL_PKGS=" \
     rpm -V $INSTALL_PKGS && \
     yum -y clean all --enablerepo='*'
 COPY CiteSeerX/crawler/code_base/csxbot-0.3 /root/csxbot-0.3
+WORKDIR /root/csxbot-0.3
+RUN python setup.py install
+WORKDIR /root/csxbot-0.3/citeseerx_crawl/django-simple-captcha-0.3.0
+RUN python setup.py install
+COPY --chown=1001:0 CiteSeerX/crawler/code_base/web /var/www/csxcrawl_web
+RUN mkdir /var/www/python-eggs && chown -R 1001 /var/www/python-eggs
+COPY csxcrawl_web.conf /etc/httpd/conf.d/
+RUN rpm -Uvh --nodeps $(repoquery --location mod_wsgi) && \
+    cp /usr/lib64/httpd/modules/mod_wsgi.so /opt/rh/httpd24/root/etc/httpd/modules/mod_wsgi.so
 USER 1001
+
