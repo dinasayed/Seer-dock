@@ -1,8 +1,7 @@
-FROM registry.access.redhat.com/rhscl/httpd-24-rhel7
-USER root
+FROM registry.centos.org/centos/httpd:latest
 RUN INSTALL_PKGS=" \
-        httpd24-httpd-devel \
-#        mod_wsgi \
+        httpd-devel \
+        mod_wsgi \
         gcc-c++ \
         python-devel \
         freetype-devel \
@@ -19,10 +18,11 @@ WORKDIR /root/csxbot-0.3
 RUN python setup.py install
 WORKDIR /root/csxbot-0.3/citeseerx_crawl/django-simple-captcha-0.3.0
 RUN python setup.py install
-COPY --chown=1001:0 CiteSeerX/crawler/code_base/web /var/www/csxcrawl_web
-RUN mkdir /var/www/python-eggs && chown -R 1001 /var/www/python-eggs
+COPY CiteSeerX/crawler/code_base/web /var/www/csxcrawl_web
+RUN mkdir /var/www/python-eggs
 COPY csxcrawl_web.conf /etc/httpd/conf.d/
-RUN rpm -Uvh --nodeps $(repoquery --location mod_wsgi) && \
-    cp /usr/lib64/httpd/modules/mod_wsgi.so /opt/rh/httpd24/root/etc/httpd/modules/mod_wsgi.so
-USER 1001
+ADD https://media.djangoproject.com/releases/1.3/Django-1.3.7.tar.gz /root/
+RUN tar -C /root/ -zxvf /root/Django-1.3.7.tar.gz
+WORKDIR /root/Django-1.3.7
+RUN python setup.py install
 
