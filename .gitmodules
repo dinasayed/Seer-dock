@@ -1,6 +1,6 @@
 [submodule "CiteSeerX"]
 	path = CiteSeerX
-	url = git@github.com:mnoureldin/CiteSeerX.git
+	url = ../../mnoureldin/CiteSeerX.git
 [submodule "PerlPipelineExtractor"]
 	path = PerlPipelineExtractor
-	url = git@github.com:mnoureldin/PerlPipelineExtractor.git
+	url = ../../mnoureldin/PerlPipelineExtractor.git
