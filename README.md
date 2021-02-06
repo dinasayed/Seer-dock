@@ -60,20 +60,74 @@
    $ docker-compose up -d
    ```
    
-10. Open https://localhost:8443/ in a browser and login with `admin`/`admin`
-
-11. Crawl
-
-12. Run CDI using
+10. Verify that all containers started successfully
 
     ```bash
-    $ docker exec -it -w /data/heritrix/jobs/ heritrix bash -c "ln -s BigDatapapers latest"
-    docker exec -it -w /cdi/ heritrix bash -c "python cdi.py"
+    $ docker ps --all --filter name=medseer # OR
+    $ docker container ls --all --filter name=medseer #OR
+    $ docker-compose ps
+    ```
+    
+    *Note: The extractor container will fail to start if this is the first time to run MedSeer. That is because it depends on a database table which will be created later by the CDI.*
+      `[java] WARNING: java.sql.SQLSyntaxErrorException: Table 'citeseerx_crawl.main_crawl_document' doesn't exist`
+   
+11. Open https://localhost:8443/ in a browser and login with `admin`/`admin`
+
+12. Create a new crawl job or add an existing one under `data/heritrix/jobs/`
+
+13. Run CDI using
+
+    ```bash
+    $ docker exec -it -w /data/heritrix/jobs/ medseer_heritrix_1 bash -c "rm latest" # Delete latest link if already exists
+    $ docker exec -it -w /data/heritrix/jobs/ medseer_heritrix_1 bash -c "ln -s <job_name> latest"
+    $ docker exec -it -w /cdi/ medseer_heritrix_1 bash -c "python cdi.py"
     ```
 
-    ---
+14. Verify crawl output exists under `data\crawl\rep`
 
-    # 
+15.  Restart the extractor if it is not already running
+
+    ```bash
+    $ docker-compose start extractor # OR
+    $ docker-compose down && docker-compose up -d # Restart everything
+    ```
+
+16. Verify extractor output under `data\exports\ex<today's date>`
+
+17. Copy the extracted data
+
+    ```bash
+    $ mkdir data/ingest/  
+    $ cp -r data/exports/ex<today's date> data/ingest/
+    ```
+
+18. Import the data
+
+    ```bash
+    $ docker exec -it -w /CiteSeerX/bin medseer_extractor_1 bash -c "./createXML.pl /data/ingest/ex<today's date>"
+    $ docker exec -it -w /CiteSeerX/bin medseer_extractor_1 bash -c "./batchImport /data/ingest/ex<today's date>"
+    ```
+
+19. Verify that papers and authors were imported in the databases
+
+    ```bash
+    $ docker exec -it medseer_mysql_1 mysql -ppasswd 
+    ```
+
+    ```sql
+    mysql> SHOW DATABASES;
+    mysql> USE citeseerx;
+    mysql> SHOW TABLES;
+    mysql> SELECT * FROM citeseerx.papers;
+    mysql> SELECT * FROM citeseerx.authors;
+    ```
+
+20. Run indexer
+
+    ```bash
+    $ chmod a+w data/solr/citeseerx/
+    $ docker exec -it -w /CiteSeerX/bin medseer_extractor_1 bash -c "./updateIndex"
+    ```
 
 ---
 

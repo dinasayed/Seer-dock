@@ -15,24 +15,24 @@ services:
     ports:
       - "8443:8443"
     volumes:
-      - ./data:/data
+      - ./data:/data:z
     depends_on:
       - mysql
   extractor:
     image: "noureldin/csxextractor:5.26.3"
     volumes:
-      - ./data:/data
+      - ./data:/data:z
     depends_on:
       - mysql
       - heritrix
       - doi
       - solr
-  doi:
-    image: "noureldin/doi:1.7.9"
+#  doi:
+#    image: "noureldin/doi:1.7.9"
   solr:
     image: "noureldin/csxsolr:4.9.0"
     volumes:
-      - ./data:/data
+      - ./data:/data:z
     environment:
       CATALINA_OPTS: "-Dsolr.solr.home=/data/solr"
     ports:
