@@ -27,8 +27,8 @@ services:
       - heritrix
       - doi
       - solr
-#  doi:
-#    image: "noureldin/doi:1.7.9"
+  doi:
+    image: "noureldin/doi:1.7.9"
   solr:
     image: "noureldin/csxsolr:4.9.0"
     volumes:
