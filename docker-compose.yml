@@ -41,6 +41,8 @@ services:
     image: "noureldin/csxhttpd:2.4"
     ports:
       - "8880:80"
+    volumes:
+      - ./data:/data:z
     depends_on:
       - mysql
 volumes:
