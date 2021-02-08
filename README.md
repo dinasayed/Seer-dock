@@ -128,6 +128,25 @@
     $ chmod a+w data/solr/citeseerx/
     $ docker exec -it -w /CiteSeerX/bin medseer_extractor_1 bash -c "./updateIndex"
     ```
+    
+21. Open Solr http://localhost:8080/solr/
+
+22. Open Search Application http://localhost:8080/citeseerx/index
+
+23. Create Django database tables
+
+    ```bash
+    $ docker exec -it -w /root/csxbot-0.3/citeseerx_crawl medseer_httpd_1 bash -c "python manage.py syncdb"
+    ```
+
+24. Open Crawler http://localhost:8880/
+
+25. ***DOESN'T WORK:*** Generate static file
+    https://django.readthedocs.io/en/1.3.X/howto/static-files.html
+
+    ```bash
+    $ docker exec -it -w /root/csxbot-0.3/citeseerx_crawl medseer_httpd_1 bash -c "python manage.py collectstatic"
+    ```
 
 ---
 
