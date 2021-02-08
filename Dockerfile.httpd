@@ -13,6 +13,9 @@ RUN INSTALL_PKGS=" \
     yum install -y --setopt=tsflags=nodocs $INSTALL_PKGS && \
     rpm -V $INSTALL_PKGS && \
     yum -y clean all --enablerepo='*'
+COPY CiteSeerX/crawler/code_base/crawler-0.5.4 /root/crawler-0.5.4
+WORKDIR /root/crawler-0.5.4
+RUN python setup.py install
 COPY CiteSeerX/crawler/code_base/csxbot-0.3 /root/csxbot-0.3
 WORKDIR /root/csxbot-0.3
 RUN python setup.py install
