@@ -3,19 +3,19 @@
 1. Clone recursively using SSH
 
    ```bash
-   $ git clone --recurse-submodules git@github.com:dinasayed/medseer.git
+   $ git clone --recurse-submodules git@github.com:dinasayed/Seer-dock.git
    ```
 
    Or using HTTPS
 
    ```bash
-   $ git clone --recurse-submodules https://github.com/dinasayed/medseer.git
+   $ git clone --recurse-submodules https://github.com/dinasayed/Seer-dock.git
    ```
 
 2. Enter project directory
 
    ```bash
-   $ cd medseer
+   $ cd Seer-dock
    ```
 
 3. Build MySQL image
@@ -63,8 +63,8 @@
 10. Verify that all containers started successfully
 
     ```bash
-    $ docker ps --all --filter name=medseer # OR
-    $ docker container ls --all --filter name=medseer #OR
+    $ docker ps --all --filter name=Seer-dock # OR
+    $ docker container ls --all --filter name=Seer-dock #OR
     $ docker-compose ps
     ```
     
