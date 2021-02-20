@@ -1,21 +1,21 @@
-# MedSeer
+# Seerdock
 
 1. Clone recursively using SSH
 
    ```bash
-   $ git clone --recurse-submodules git@github.com:dinasayed/Seer-dock.git
+   $ git clone --recurse-submodules git@github.com:dinasayed/Seerdock.git
    ```
 
    Or using HTTPS
 
    ```bash
-   $ git clone --recurse-submodules https://github.com/dinasayed/Seer-dock.git
+   $ git clone --recurse-submodules https://github.com/dinasayed/Seerdock.git
    ```
 
 2. Enter project directory
 
    ```bash
-   $ cd Seer-dock
+   $ cd Seerdock
    ```
 
 3. Build MySQL image
@@ -63,12 +63,12 @@
 10. Verify that all containers started successfully
 
     ```bash
-    $ docker ps --all --filter name=Seer-dock # OR
-    $ docker container ls --all --filter name=Seer-dock #OR
+    $ docker ps --all --filter name=Seerdock # OR
+    $ docker container ls --all --filter name=Seerdock #OR
     $ docker-compose ps
     ```
     
-    *Note: The extractor container will fail to start if this is the first time to run MedSeer. That is because it depends on a database table which will be created later by the CDI.*
+    *Note: The extractor container will fail to start if this is the first time to run Seerdock. That is because it depends on a database table which will be created later by the CDI.*
       `[java] WARNING: java.sql.SQLSyntaxErrorException: Table 'citeseerx_crawl.main_crawl_document' doesn't exist`
    
 11. Open https://localhost:8443/ in a browser and login with `admin`/`admin`
