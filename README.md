@@ -78,9 +78,9 @@
 13. Run CDI using
 
     ```bash
-    $ docker exec -it -w /data/heritrix/jobs/ medseer_heritrix_1 bash -c "rm latest" # Delete latest link if already exists
-    $ docker exec -it -w /data/heritrix/jobs/ medseer_heritrix_1 bash -c "ln -s <job_name> latest"
-    $ docker exec -it -w /cdi/ medseer_heritrix_1 bash -c "python cdi.py"
+    $ docker exec -it -w /data/heritrix/jobs/ Seerdock_heritrix_1 bash -c "rm latest" # Delete latest link if already exists
+    $ docker exec -it -w /data/heritrix/jobs/ Seerdock_heritrix_1 bash -c "ln -s <job_name> latest"
+    $ docker exec -it -w /cdi/ Seerdock_heritrix_1 bash -c "python cdi.py"
     ```
 
 14. Verify crawl output exists under `data\crawl\rep`
@@ -104,14 +104,14 @@
 18. Import the data
 
     ```bash
-    $ docker exec -it -w /CiteSeerX/bin medseer_extractor_1 bash -c "./createXML.pl /data/ingest/ex<today's date>"
-    $ docker exec -it -w /CiteSeerX/bin medseer_extractor_1 bash -c "./batchImport /data/ingest/ex<today's date>"
+    $ docker exec -it -w /CiteSeerX/bin Seerdock_extractor_1 bash -c "./createXML.pl /data/ingest/ex<today's date>"
+    $ docker exec -it -w /CiteSeerX/bin Seerdock_extractor_1 bash -c "./batchImport /data/ingest/ex<today's date>"
     ```
 
 19. Verify that papers and authors were imported in the databases
 
     ```bash
-    $ docker exec -it medseer_mysql_1 mysql -ppasswd 
+    $ docker exec -it Seerdock_mysql_1 mysql -ppasswd 
     ```
 
     ```sql
@@ -126,7 +126,7 @@
 
     ```bash
     $ chmod a+w data/solr/citeseerx/
-    $ docker exec -it -w /CiteSeerX/bin medseer_extractor_1 bash -c "./updateIndex"
+    $ docker exec -it -w /CiteSeerX/bin Seerdock_extractor_1 bash -c "./updateIndex"
     ```
     
 21. Open Solr http://localhost:8080/solr/
@@ -136,7 +136,7 @@
 23. Create Django database tables
 
     ```bash
-    $ docker exec -it -w /root/csxbot-0.3/citeseerx_crawl medseer_httpd_1 bash -c "python manage.py syncdb"
+    $ docker exec -it -w /root/csxbot-0.3/citeseerx_crawl Seerdock_httpd_1 bash -c "python manage.py syncdb"
     ```
 
 24. Open Crawler http://localhost:8880/
@@ -145,7 +145,7 @@
     https://django.readthedocs.io/en/1.3.X/howto/static-files.html
 
     ```bash
-    $ docker exec -it -w /root/csxbot-0.3/citeseerx_crawl medseer_httpd_1 bash -c "python manage.py collectstatic"
+    $ docker exec -it -w /root/csxbot-0.3/citeseerx_crawl Seerdock_httpd_1 bash -c "python manage.py collectstatic"
     ```
 
 ---
