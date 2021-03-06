@@ -1,4 +1,22 @@
-# Seerdock
+# Seer-Dock
+
+Seek-Dock is a general-purpose framework based on docker and CiteSeerX as its kernel. You can user Seer-Dock to develop a scholarly document harvesting and management system. 
+Note: A complete description for CiteSeerx architecture can be found on CiteSeerx Manual:
+https://github.com/SeerLabs/CiteSeerX/blob/master/doc/cxm.pdf
+
+
+##Prerequisite: Docker installation:
+
+You heed to install docker according to your OS, for example below is the docker installation instruction for 
+
+Ubuntu: https://docs.docker.com/engine/install/ubuntu/
+
+Fedora: https://docs.docker.com/engine/install/fedora/
+
+Debian: https://docs.docker.com/engine/install/debian/
+
+CentOs: https://docs.docker.com/engine/install/centos/
+
 
 1. Clone recursively using SSH
 
@@ -21,37 +39,37 @@
 3. Build MySQL image
 
    ```bash
-   $ docker build -t noureldin/csxmysql:8.0.16 -f Dockerfile.mysql .
+   $ sudo docker build -t noureldin/csxmysql:8.0.16 -f Dockerfile.mysql .
    ```
 
 4. Build Crawler image
 
    ```bash
-   $ docker build -t noureldin/heritrix:3.4.0 -f Dockerfile.crawler .
+   $ sudo docker build -t noureldin/heritrix:3.4.0 -f Dockerfile.crawler .
    ```
 
 5. Build Extractor image
 
    ```bash
-   $ docker build -t noureldin/csxextractor:5.22.1 -f Dockerfile.extractor .
+   $ sudo docker build -t noureldin/csxextractor:5.22.1 -f Dockerfile.extractor .
    ```
 
 6. Build DOI image
 
    ```bash
-   $ docker build -t noureldin/doi:1.7.9 -f Dockerfile.doi .
+   $ sudo docker build -t noureldin/doi:1.7.9 -f Dockerfile.doi .
    ```
 
 7. Build Solr image
 
    ```bash
-   $ docker build -t noureldin/csxsolr:4.9.0 -f Dockerfile.solr .
+   $ sudo docker build -t noureldin/csxsolr:4.9.0 -f Dockerfile.solr .
    ```
 
 8. Build Apache httpd image
 
    ```bash
-   $ docker build -t noureldin/csxhttpd:2.4 -f Dockerfile.httpd .
+   $ sudo docker build -t noureldin/csxhttpd:2.4 -f Dockerfile.httpd .
    ```
    
 9. Run
@@ -202,34 +220,6 @@ docker run --name heritrix --rm -p 8443:8443 -v ./data:/data heritrix:3.4.0
 
 ---
 
-1. csxmysql
 
-2. Heritrix
-
-3. Httpd
-
-4. data/crawl/rep/
-
-5. Httpd
-
-6. Extractor
-
-7. Extractor
-
-8. DOI
-
-9. MySQL
-
-10. -
-
-11. /data/ingest
-
-12. Solr
-
-13. Solr
-
-14. -
-
-15. -
 
     
