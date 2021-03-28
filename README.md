@@ -5,9 +5,9 @@ Note: A complete description for CiteSeerx architecture can be found on CiteSeer
 https://github.com/SeerLabs/CiteSeerX/blob/master/doc/cxm.pdf
 
 
-##Prerequisite:
+## Prerequisite:
 
-First Docker engine installation:
+**First Docker engine installation:**
 
 You heed to install docker according to your OS, for example below is the docker installation instruction for 
 
@@ -19,7 +19,9 @@ Debian: https://docs.docker.com/engine/install/debian/
 
 CentOs: https://docs.docker.com/engine/install/centos/
 
-Second: Make sure docker-compose is installed. Depending on your OS follow the instruction here:
+**Second docker-compose installation:** 
+Make sure docker-compose is installed. Depending on your OS follow the instruction here:
+
 https://docs.docker.com/compose/install/
 
 
