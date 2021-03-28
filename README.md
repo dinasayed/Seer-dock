@@ -5,7 +5,9 @@ Note: A complete description for CiteSeerx architecture can be found on CiteSeer
 https://github.com/SeerLabs/CiteSeerX/blob/master/doc/cxm.pdf
 
 
-##Prerequisite: Docker installation:
+##Prerequisite:
+
+First Docker engine installation:
 
 You heed to install docker according to your OS, for example below is the docker installation instruction for 
 
@@ -16,6 +18,9 @@ Fedora: https://docs.docker.com/engine/install/fedora/
 Debian: https://docs.docker.com/engine/install/debian/
 
 CentOs: https://docs.docker.com/engine/install/centos/
+
+Second: Make sure docker-compose is installed. Depending on your OS follow the instruction here:
+https://docs.docker.com/compose/install/
 
 
 1. Clone recursively using SSH
