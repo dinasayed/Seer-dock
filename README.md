@@ -24,6 +24,10 @@ Make sure docker-compose is installed. Depending on your OS follow the instructi
 
 https://docs.docker.com/compose/install/
 
+**Third Add your user to docker group:**
+If you don’t want to preface the docker command with sudo, create a Unix group called docker and add users to it. Follow the instruction in this link:
+https://docs.docker.com/engine/install/linux-postinstall/
+
 
 1. Clone recursively using SSH
 
@@ -46,37 +50,37 @@ https://docs.docker.com/compose/install/
 3. Build MySQL image
 
    ```bash
-   $ sudo docker build -t noureldin/csxmysql:8.0.16 -f Dockerfile.mysql .
+   $ docker build -t noureldin/csxmysql:8.0.16 -f Dockerfile.mysql .
    ```
 
 4. Build Crawler image
 
    ```bash
-   $ sudo docker build -t noureldin/heritrix:3.4.0 -f Dockerfile.crawler .
+   $ docker build -t noureldin/heritrix:3.4.0 -f Dockerfile.crawler .
    ```
 
 5. Build Extractor image
 
    ```bash
-   $ sudo docker build -t noureldin/csxextractor:5.22.1 -f Dockerfile.extractor .
+   $ docker build -t noureldin/csxextractor:5.22.1 -f Dockerfile.extractor .
    ```
 
 6. Build DOI image
 
    ```bash
-   $ sudo docker build -t noureldin/doi:1.7.9 -f Dockerfile.doi .
+   $ docker build -t noureldin/doi:1.7.9 -f Dockerfile.doi .
    ```
 
 7. Build Solr image
 
    ```bash
-   $ sudo docker build -t noureldin/csxsolr:4.9.0 -f Dockerfile.solr .
+   $ docker build -t noureldin/csxsolr:4.9.0 -f Dockerfile.solr .
    ```
 
 8. Build Apache httpd image
 
    ```bash
-   $ sudo docker build -t noureldin/csxhttpd:2.4 -f Dockerfile.httpd .
+   $ docker build -t noureldin/csxhttpd:2.4 -f Dockerfile.httpd .
    ```
    
 9. Run
@@ -225,6 +229,45 @@ docker stop mysqlserver
 docker run --name heritrix --rm -p 8443:8443 -v ./data:/data heritrix:3.4.0
 ```
 
+---
+
+## Change docker root directory
+
+If you need to change the docker root directory because you are running out of space for example, then you need to do the following. 
+1)	Check your “docker root info” by typing the command:
+```bash
+docker info
+```
+ 
+2)	if you are using Ubuntu, then the directory would be /var/lib/docker
+3)	Backup the contents of /var/lib/docker  
+4)	Create a new directory where you need your new path /newpath
+5)	Navigate and open  /etc/docker/daemon.json   (if you didn’t find the json file, then create daemon.json)
+add the following line to your /etc/docker/daemon.json
+```bash
+{
+“data-root”:”/newpath/docker”
+}
+```
+
+6)	 move the content of your container from the old path (i.e. /var/lib/docker) to the new directory (i.e. /newpath/docker) make sure that the files and directories permissions are identical to the old path. 
+7)	Type the following two commands for your changes to be reflected
+```bash
+sudo systemctl daemon-reload
+sudo systemctl restart docker
+```
+8)	Verify that your docker root directory is updated by typing: 
+```bash
+docker info
+```
+9)	Verify that your images exist by typing: docker images
+
+Note: 
+- Avoid using NFS mount for the new path this may cause the docker not starting, refer to this problem: https://stackoverflow.com/questions/54214613/error-creating-overlay-mount-to-a-nfs-mount 
+- You can also remove unused images which consume space using:
+```bash
+docker images -a | grep "none" | awk '{print $3}' | xargs docker rmi
+```
 ---
 
 
